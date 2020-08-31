@@ -30,6 +30,14 @@ namespace LoanApp
             services.AddDbContext<LoanContext>(options => options.UseSqlServer(Configuration.GetConnectionString("LoanDatabase")));
 
             services.AddControllers();
+
+            services.AddCors(options =>
+            {
+                options.AddPolicy("MyCorsPolicy", builder => builder
+                    .AllowAnyOrigin()
+                    .AllowAnyMethod()
+                    .AllowAnyHeader());
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -43,6 +51,8 @@ namespace LoanApp
             app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            app.UseCors("MyCorsPolicy");
 
             app.UseAuthorization();
 
